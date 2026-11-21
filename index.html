@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <title>Welcome to Go Noles!</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(135deg, #002147 0%, #782F40 50%, #CE1126 100%);
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #fff;
+      padding: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none;
+    }
+    .container {
+      text-align: center;
+      max-width: 480px;
+      width: 100%;
+      position: relative;
+      z-index: 1;
+    }
+    .logo-row {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+    .fsu-logo {
+      width: 100px;
+      height: 100px;
+      background: #CE1126;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 32px rgba(206, 17, 38, 0.4);
+      border: 4px solid #FFD700;
+      position: relative;
+      overflow: hidden;
+    }
+    .fsu-logo::before {
+      content: 'FSU';
+      font-weight: 900;
+      font-size: 1.8rem;
+      color: #FFD700;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      letter-spacing: 0.05em;
+    }
+    .baby-photo {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #fff5e6 0%, #ffe0b2 100%);
+      border: 4px solid #FFD700;
+      box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .baby-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .baby-photo .placeholder {
+      color: #8D6E63;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-align: center;
+      padding: 0.5rem;
+    }
+    h1 {
+      font-size: clamp(2rem, 8vw, 3rem);
+      font-weight: 800;
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 4px 24px rgba(0,0,0,0.3);
+      background: linear-gradient(135deg, #fff 0%, #FFD700 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .subtitle {
+      font-size: clamp(1rem, 4vw, 1.3rem);
+      color: rgba(255,255,255,0.9);
+      margin-bottom: 2.5rem;
+      font-weight: 400;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .network-info {
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,215,0,0.3);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .network-label {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #FFD700;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+    }
+    .network-name {
+      font-family: 'SF Mono', 'Monaco', monospace;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.05em;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: linear-gradient(135deg, #CE1126 0%, #A0182A 100%);
+      color: #fff;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 8px 24px rgba(206, 17, 38, 0.4);
+      letter-spacing: 0.02em;
+    }
+    .btn:hover, .btn:active {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(206, 17, 38, 0.5);
+    }
+    .btn:focus-visible {
+      outline: 3px solid #FFD700;
+      outline-offset: 4px;
+    }
+    .btn-icon {
+      width: 1.25em;
+      height: 1.25em;
+    }
+    .footer {
+      margin-top: 2.5rem;
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.6);
+      font-weight: 400;
+    }
+    .footer a {
+      color: #FFD700;
+      text-decoration: none;
+    }
+    .footer a:hover { text-decoration: underline; }
+    .btn.loading { pointer-events: none; opacity: 0.8; }
+    .spinner {
+      width: 1.25em;
+      height: 1.25em;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .success-state { display: none; }
+    .success-state.visible { display: block; animation: fadeIn 0.4s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+    .checkmark {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #FFD700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1.5rem;
+    }
+    .checkmark svg { width: 36px; height: 36px; color: #002147; }
+    @media (max-width: 480px) {
+      .logo-row { gap: 1rem; }
+      .fsu-logo, .baby-photo { width: 80px; height: 80px; }
+      .fsu-logo::before { font-size: 1.4rem; }
+      .btn { padding: 0.875rem 2rem; font-size: 1rem; }
+      .gift-code { font-size: 1.1rem; }
+    }
+    .pwd-hint {
+      font-size: 0.8rem;
+      color: rgba(255,255,255,0.6);
+      margin-top: 0.5rem;
+      font-family: 'SF Mono', 'Monaco', monospace;
+    }
+    .gift-card {
+      background: rgba(255,255,255,0.12);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,215,0,0.4);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      text-align: left;
+    }
+    .gift-card h3 {
+      font-size: 1.1rem;
+      color: #FFD700;
+      margin-bottom: 0.75rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .gift-card p {
+      color: rgba(255,255,255,0.9);
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin-bottom: 0.5rem;
+    }
+    .gift-code {
+      font-family: 'SF Mono', 'Monaco', monospace;
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #FFD700;
+      background: rgba(0,33,71,0.5);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      display: inline-block;
+      margin: 0.5rem 0;
+      letter-spacing: 0.1em;
+    }
+    .gift-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: linear-gradient(135deg, #002147 0%, #1a3a5c 100%);
+      color: #FFD700;
+      border: 2px solid #FFD700;
+      padding: 0.875rem 2rem;
+      font-size: 1rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+      margin-top: 0.5rem;
+    }
+    .gift-btn:hover {
+      background: #FFD700;
+      color: #002147;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(255, 215, 0, 0.3);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-row">
+      <div class="fsu-logo" role="img" aria-label="Florida State University logo"></div>
+      <div class="baby-photo" role="img" aria-label="Baby photo">
+        <img src="baby.png" alt="Baby" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">
+      </div>
+    </div>
+    <h1>Go Noles!</h1>
+    <p class="subtitle">Welcome to our guest network</p>
+    
+    <div class="network-info">
+      <div class="network-label">Network</div>
+      <div class="network-name">Go Noles</div>
+      <div class="pwd-hint">Password: FirstYearDown</div>
+    </div>
+    
+    <!-- 529 Gift Card Section -->
+    <div class="gift-card">
+      <h3>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Help Dorian Jr. #saveforcollege
+      </h3>
+      <p>Visit <strong>Ugift529.com</strong> and enter the code below to contribute to his 529 plan.</p>
+      <div class="gift-code">W14-U3J</div>
+      <p>Thanks for supporting his future! #Ugift</p>
+    </div>
+    
+    <a href="/connect" class="btn" id="connectBtn">
+      <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      Connect to WiFi
+    </a>
+    
+    <div class="success-state" id="successState" role="status" aria-live="polite">
+      <div class="checkmark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <polyline points="20 6 9 17 4 12" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </div>
+      <h2 style="font-size: 1.5rem; margin-bottom: 0.5rem;">You're Connected!</h2>
+      <p style="color: rgba(255,255,255,0.85); margin-bottom: 1.5rem;">Enjoy your time on Go Noles</p>
+      <a href="https://ugift529.com" target="_blank" rel="noopener" class="gift-btn" id="giftBtn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" stroke-linecap="round" stroke-linejoin="round"/>
+          <polyline points="15 3 21 3 21 9" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="10" y1="14" x2="21" y2="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Visit Ugift529.com →
+      </a>
+    </div>
+    
+    <div class="footer">
+      <p>Having trouble? Ask the host for help.</p>
+    </div>
+  </div>
+
+  <script>
+    // 529 link - redirect after successful connection
+    const GIFT_URL = "https://ugift529.com";
+    const GIFT_CODE = "W14-U3J";
+    
+    const captiveCheckUrls = [
+      'http://captive.apple.com/hotspot-detect.html',
+      'http://connectivitycheck.gstatic.com/generate_204',
+      'http://www.msftconnecttest.com/connecttest.txt'
+    ];
+    
+    async function checkInternet() {
+      for (const url of captiveCheckUrls) {
+        try {
+          await fetch(url, { method: 'HEAD', mode: 'no-cors', cache: 'no-cache' });
+          return true;
+        } catch {}
+      }
+      return false;
+    }
+    
+    async function init() {
+      const online = await checkInternet();
+      if (online) showSuccess();
+    }
+    
+    function showSuccess() {
+      document.getElementById('connectBtn').style.display = 'none';
+      document.getElementById('successState').classList.add('visible');
+      
+      // Auto-redirect to 529 page after 5 seconds
+      setTimeout(() => {
+        window.location.href = GIFT_URL;
+      }, 5000);
+    }
+    
+    document.getElementById('connectBtn').addEventListener('click', async (e) => {
+      const btn = e.currentTarget;
+      btn.classList.add('loading');
+      btn.innerHTML = '<span class="spinner"></span> Connecting...';
+      window.location.href = '/connect';
+    });
+    
+    // Manual gift button also works
+    document.getElementById('giftBtn').addEventListener('click', (e) => {
+      // Let the link work normally (target="_blank")
+    });
+    
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) setTimeout(init, 500);
+    });
+    
+    init();
+  </script>
+</body>
+</html>
