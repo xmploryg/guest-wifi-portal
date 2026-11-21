@@ -241,6 +241,39 @@
       margin: 0.5rem 0;
       letter-spacing: 0.1em;
     }
+    .gift-code-wrapper {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin: 0.5rem 0;
+    }
+    .copy-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 215, 0, 0.15);
+      border: 2px solid #FFD700;
+      border-radius: 8px;
+      cursor: pointer;
+      color: #FFD700;
+      transition: all 0.2s;
+    }
+    .copy-btn:hover {
+      background: #FFD700;
+      color: #002147;
+    }
+    .copy-btn.copied {
+      background: #28a745;
+      border-color: #28a745;
+      color: #fff;
+    }
+    .copy-hint {
+      font-size: 0.75rem;
+      color: rgba(255,255,255,0.6);
+      margin-top: 0.25rem;
+    }
     .gift-btn {
       display: inline-flex;
       align-items: center;
@@ -275,13 +308,13 @@
     </div>
     <h1>Go Noles!</h1>
     <p class="subtitle">Welcome to our guest network</p>
-    
+
     <div class="network-info">
       <div class="network-label">Network</div>
       <div class="network-name">Go Noles</div>
       <div class="pwd-hint">Password: FirstYearDown</div>
     </div>
-    
+
     <!-- 529 Gift Card Section -->
     <div class="gift-card">
       <h3>
@@ -291,17 +324,26 @@
         Help Dorian Jr. #saveforcollege
       </h3>
       <p>Visit <strong>Ugift529.com</strong> and enter the code below to contribute to his 529 plan.</p>
-      <div class="gift-code">W14-U3J</div>
+      <div class="gift-code-wrapper">
+        <span class="gift-code" id="giftCode">W14-U3J</span>
+        <button class="copy-btn" id="copyBtn" aria-label="Copy gift code">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+        </button>
+      </div>
+      <p class="copy-hint" id="copyHint">Tap to copy code</p>
       <p>Thanks for supporting his future! #Ugift</p>
     </div>
-    
+
     <a href="/connect" class="btn" id="connectBtn">
       <svg class="btn-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
         <path d="M5 12h14M12 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
       Connect to WiFi
     </a>
-    
+
     <div class="success-state" id="successState" role="status" aria-live="polite">
       <div class="checkmark">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
@@ -319,7 +361,7 @@
         Visit Ugift529.com →
       </a>
     </div>
-    
+
     <div class="footer">
       <p>Having trouble? Ask the host for help.</p>
     </div>
@@ -329,13 +371,13 @@
     // 529 link - redirect after successful connection (pass gift code)
     const GIFT_URL = "https://ugift529.com?giftCode=W14-U3J";
     const GIFT_CODE = "W14-U3J";
-    
+
     const captiveCheckUrls = [
       'http://captive.apple.com/hotspot-detect.html',
       'http://connectivitycheck.gstatic.com/generate_204',
       'http://www.msftconnecttest.com/connecttest.txt'
     ];
-    
+
     async function checkInternet() {
       for (const url of captiveCheckUrls) {
         try {
@@ -345,34 +387,65 @@
       }
       return false;
     }
-    
+
     async function init() {
       const online = await checkInternet();
       if (online) showSuccess();
     }
-    
+
     function showSuccess() {
       document.getElementById('connectBtn').style.display = 'none';
       document.getElementById('successState').classList.add('visible');
       // No auto-redirect - user clicks the button to visit ugift529.com
     }
-    
+
     document.getElementById('connectBtn').addEventListener('click', async (e) => {
       const btn = e.currentTarget;
       btn.classList.add('loading');
       btn.innerHTML = '<span class="spinner"></span> Connecting...';
       window.location.href = '/connect';
     });
-    
+
     // Manual gift button also works
     document.getElementById('giftBtn').addEventListener('click', (e) => {
       // Let the link work normally (target="_blank")
     });
-    
+
+    // Copy gift code button
+    document.getElementById('copyBtn').addEventListener('click', () => {
+      const code = 'W14-U3J';
+      navigator.clipboard.writeText(code).then(() => {
+        const btn = document.getElementById('copyBtn');
+        const hint = document.getElementById('copyHint');
+        btn.classList.add('copied');
+        hint.textContent = 'Copied!';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          hint.textContent = 'Tap to copy code';
+        }, 2000);
+      }).catch(() => {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = code;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+        const btn = document.getElementById('copyBtn');
+        const hint = document.getElementById('copyHint');
+        btn.classList.add('copied');
+        hint.textContent = 'Copied!';
+        setTimeout(() => {
+          btn.classList.remove('copied');
+          hint.textContent = 'Tap to copy code';
+        }, 2000);
+      });
+    });
+
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) setTimeout(init, 500);
     });
-    
+
     init();
   </script>
 </body>
