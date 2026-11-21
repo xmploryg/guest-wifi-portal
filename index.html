@@ -354,11 +354,7 @@
     function showSuccess() {
       document.getElementById('connectBtn').style.display = 'none';
       document.getElementById('successState').classList.add('visible');
-      
-      // Auto-redirect to 529 page after 5 seconds
-      setTimeout(() => {
-        window.location.href = GIFT_URL;
-      }, 5000);
+      // No auto-redirect - user clicks the button to visit ugift529.com
     }
     
     document.getElementById('connectBtn').addEventListener('click', async (e) => {
